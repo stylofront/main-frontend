@@ -42,7 +42,7 @@ export default function HeroSection() {
           <div className="mt-10 flex max-lg:justify-center flex-col gap-4 sm:flex-row">
             <Link
               className="group inline-flex items-center justify-center rounded-2xl bg-linear-to-r from-primary to-primary/30 px-8 py-4 text-base font-medium text-white font-body shadow-[0_20px_60px_rgba(16,185,129,0.35)] transition hover:translate-y-0.5"
-              href="auth.stylofront.site"
+              href="https://auth.stylofront.site"
             >
               Start Creating →
             </Link>
@@ -113,7 +113,7 @@ export default function HeroSection() {
           <div className="h-16 w-10 rounded-full border border-gray-300 p-2">
             <span className="block h-full w-full rounded-full bg-gray-300 animate-bounce" />
           </div>
-          <span className="text-xs tracking-[0.4em] uppercase font-body text-gray-300">Scroll</span>
+          <span className="text-xs tracking-[0.4em] uppercase font-body animate-pulse text-gray-300">Scroll</span>
         </div>
       </div>
     </section>

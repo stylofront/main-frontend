@@ -88,8 +88,8 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href="#contact"
-              className="px-5 lg:px-6 py-2 rounded-lg bg-linear-to-r from-primary to-primary/30 text-white font-body font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all hover:-translate-y-0.5"
+              href="https://auth.stylofront.site"
+              className="px-5 lg:px-6 py-2 rounded-lg bg-linear-to-r from-primary to-primary/20 text-white font-body font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all hover:-translate-y-0.5"
             >
               Get Started
             </Link>
@@ -132,9 +132,9 @@ export default function Header() {
                 </Link>
               ))}
               <a
-                href="#contact"
+                href="https://auth.stylofront.site"
                 onClick={() => setIsMenuOpen(false)}
-                className="px-6 py-3 rounded-lg bg-linear-to-r from-primary to-primary/30 text-white font-body font-semibold shadow-lg shadow-blue-500/30 text-center"
+                className="px-6 py-3 rounded-lg bg-linear-to-r from-primary to-primary/20 text-white font-body font-semibold shadow-lg shadow-blue-500/30 text-center"
               >
                 Get Started
               </a>

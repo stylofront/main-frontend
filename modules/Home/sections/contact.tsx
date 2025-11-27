@@ -125,7 +125,7 @@ export default function ContactSection() {
                   <button
                     type="submit"
                     disabled={formState === 'loading'}
-                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-primary to-secondary px-6 py-4 text-base font-semibold text-white shadow-xl shadow-blue-500/40 transition hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed font-body"
+                    className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-linear-to-r from-primary to-secondary px-6 py-4 text-base font-semibold text-white shadow-xl shadow-blue-500/40 transition hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed font-body"
                   >
                     {formState === 'loading' ? (
                       <>
