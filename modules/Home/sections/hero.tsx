@@ -18,7 +18,7 @@ export default function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-primary via-secondary to-accent">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.25),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.25),transparent_55%)]" />
         <div className="absolute inset-0 bg-[url('https://www.toptal.com/designers/subtlepatterns/uploads/dot-grid.png')] opacity-10 mix-blend-screen" />
       </div>
 
