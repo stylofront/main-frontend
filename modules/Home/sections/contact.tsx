@@ -1,179 +1,210 @@
-'use client';
+"use client";
 
-import { motion } from "framer-motion";
-import { useState, FormEvent } from "react";
-import { FaCheckCircle, FaTimesCircle, FaSpinner } from "react-icons/fa";
+import { useState, useRef } from "react";
+import { FaPaperPlane, FaLightbulb, FaCheckCircle } from "react-icons/fa";
+import { cn } from "@/lib/utils";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ContactSection() {
-  const [formState, setFormState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
+    const containerRef = useRef<HTMLElement>(null);
+    const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+    const [formData, setFormData] = useState({
+        email: "",
+        idea: "",
+        message: ""
+    });
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setFormState('loading');
-    setErrorMessage('');
+    useGSAP(() => {
+        gsap.from(".contact-header", {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            scrollTrigger: {
+                trigger: ".contact-header",
+                start: "top 90%",
+            }
+        });
 
-    const formData = new FormData(e.currentTarget);
-    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || 'b3673d69-0a75-4567-8d2d-50786ba24382';
-    
-    formData.append("access_key", accessKey);
+        gsap.from(".contact-form", {
+            y: 40,
+            opacity: 0,
+            scale: 0.98,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".contact-form",
+                start: "top 85%",
+            }
+        });
+    }, { scope: containerRef });
 
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
-      });
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setStatus("sending");
 
-      const data = await response.json();
+        const data = new FormData();
+        data.append("access_key", "b3673d69-0a75-4567-8d2d-50786ba24382");
+        data.append("email", formData.email);
+        data.append("idea", formData.idea);
+        data.append("message", formData.message);
+        data.append("subject", "New Idea Submission - StyloFront");
 
-      if (data.success) {
-        setFormState('success');
-        setErrorMessage('');
-        (e.target as HTMLFormElement).reset();
-      } else {
-        throw new Error(data.message || 'Failed to submit form');
-      }
-    } catch (error) {
-      setFormState('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Failed to send message. Please try again.');
-    }
-  };
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: data,
+            });
 
-  return (
-    <section
-      id="contact"
-      className="relative bg-linear-to-b from-white via-blue-50/40 to-white py-24 overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.06),transparent_60%)] pointer-events-none" />
-      <div className="mx-auto max-w-7xl px-6 relative z-10">
-        <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8 }}
-            className="relative rounded-2xl border-2 border-blue-200/50 bg-linear-to-br from-white via-blue-50/30 to-cyan-50/30 p-10 shadow-2xl backdrop-blur-xl"
-          >
-            <div className="absolute -inset-1 bg-linear-to-r from-blue-400/20 via-cyan-400/20 to-teal-400/20 blur-2xl opacity-50 rounded-2xl" />
-            <div className="relative z-10">
-              <p className="text-sm uppercase tracking-[0.4em] text-blue-600 font-body font-semibold">Contact</p>
-              <h2 className="mt-6 text-3xl font-semibold sm:text-4xl font-heading text-gray-900">Got questions? Want early access?</h2>
-              <p className="mt-4 text-gray-600 font-body">
-                Tell us what you&apos;re building. We&apos;ll help you ship a gorgeous UI stack without the headache.
-              </p>
-              
-              {formState === 'success' ? (
-                <div className="mt-10 rounded-lg border-2 border-emerald-300 bg-linear-to-br from-emerald-50 to-green-50 p-6 shadow-lg backdrop-blur-sm">
-                  <div className="flex items-center gap-3 text-emerald-700">
-                    <FaCheckCircle className="text-2xl" />
-                    <div>
-                      <h3 className="font-semibold font-heading">Message sent successfully!</h3>
-                      <p className="text-sm font-body mt-1">We&apos;ll get back to you within 24 hours.</p>
+            const res = await response.json();
+            if (res.success) {
+                setStatus("success");
+                setFormData({ email: "", idea: "", message: "" });
+                setTimeout(() => setStatus("idle"), 5000);
+            } else {
+                setStatus("error");
+                setTimeout(() => setStatus("idle"), 3000);
+            }
+        } catch (err) {
+            setStatus("error");
+            setTimeout(() => setStatus("idle"), 3000);
+        }
+    };
+
+    return (
+        <section ref={containerRef} id="contact" className="py-24 px-6 bg-background relative overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-gradient-to-b from-primary/5 to-transparent blur-3xl" />
+
+            <div className="container mx-auto max-w-2xl relative z-10">
+                <div className="contact-header text-center mb-12">
+                    <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary mb-6">
+                        <FaLightbulb className="w-4 h-4 animate-pulse" />
+                        <span className="text-sm font-bold">Share Your Vision</span>
                     </div>
-                  </div>
-                  <button
-                    onClick={() => setFormState('idle')}
-                    className="mt-4 text-sm text-emerald-700 hover:text-emerald-800 font-body underline"
-                  >
-                    Send another message
-                  </button>
+                    <h2 className="text-2xl md:text-4xl font-extrabold font-heading mb-3 text-foreground tracking-tight">
+                        Drop Your Idea
+                    </h2>
+                    <p className="text-muted-foreground font-body text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+                        Have a feature request or brilliant idea? We're all ears. Drop it in the box below and help shape the future of StyloFront.
+                    </p>
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="mt-10 space-y-6">
-                  {formState === 'error' && errorMessage && (
-                    <div className="rounded-lg border-2 border-red-300 bg-linear-to-br from-red-50 to-rose-50 p-4 shadow-lg backdrop-blur-sm">
-                      <div className="flex items-center gap-2 text-red-700">
-                        <FaTimesCircle />
-                        <span className="text-sm font-body">{errorMessage}</span>
-                      </div>
+
+                <div className="contact-form relative">
+                    {/* Idea Drop Box */}
+                    <div className="relative bg-card border-2 border-dashed border-border rounded-3xl p-8 md:p-10 shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:border-primary/50">
+                        {/* Top decorative element */}
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-background px-4 py-1.5 rounded-full border-2 border-border">
+                            <FaLightbulb className="w-5 h-5 text-primary" />
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            {/* Email Field */}
+                            <div className="space-y-2">
+                                <label htmlFor="email" className="text-xs font-bold font-heading text-muted-foreground uppercase tracking-wide ml-1">
+                                    Your Email
+                                </label>
+                                <input
+                                    id="email"
+                                    required
+                                    type="email"
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    className="w-full px-5 py-3 rounded-xl bg-secondary/30 border border-border focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-body text-sm placeholder:text-muted-foreground/50"
+                                    placeholder="your@email.com"
+                                />
+                            </div>
+
+                            {/* Idea Category Field */}
+                            <div className="space-y-2">
+                                <label htmlFor="category" className="text-xs font-bold font-heading text-muted-foreground uppercase tracking-wide ml-1">
+                                    Idea Category (Optional)
+                                </label>
+                                <input
+                                    id="category"
+                                    type="text"
+                                    value={formData.idea}
+                                    onChange={(e) => setFormData({ ...formData, idea: e.target.value })}
+                                    className="w-full px-5 py-3 rounded-xl bg-secondary/30 border border-border focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-body text-sm placeholder:text-muted-foreground/50"
+                                    placeholder="e.g., New Tool, UI Component, Feature Request"
+                                />
+                            </div>
+
+                            {/* Message Field with enhanced styling */}
+                            <div className="space-y-2">
+                                <label htmlFor="message" className="text-xs font-bold font-heading text-muted-foreground uppercase tracking-wide ml-1">
+                                    Your Idea
+                                </label>
+                                <div className="relative">
+                                    <textarea
+                                        id="message"
+                                        required
+                                        rows={5}
+                                        value={formData.message}
+                                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                        className="w-full px-5 py-3 rounded-xl bg-secondary/30 border border-border focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-body text-sm resize-none placeholder:text-muted-foreground/50"
+                                        placeholder="Tell us about your idea in detail... What problem does it solve? How would it help?"
+                                    />
+                                    <div className="absolute bottom-3 right-3 text-xs text-muted-foreground/50">
+                                        {formData.message.length} characters
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Submit Button */}
+                            <button
+                                disabled={status === "sending"}
+                                type="submit"
+                                className={cn(
+                                    "w-full py-3.5 rounded-xl font-bold font-heading text-base transition-all flex items-center justify-center gap-2.5 shadow-lg",
+                                    status === "success"
+                                        ? "bg-green-500 text-white hover:bg-green-600"
+                                        : status === "sending"
+                                            ? "bg-primary/70 text-primary-foreground cursor-not-allowed"
+                                            : "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/20 active:scale-[0.98]"
+                                )}
+                            >
+                                {status === "sending" ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                                        Sending...
+                                    </>
+                                ) : status === "success" ? (
+                                    <>
+                                        <FaCheckCircle className="w-4 h-4" />
+                                        Submitted Successfully!
+                                    </>
+                                ) : (
+                                    <>
+                                        <FaPaperPlane className="w-4 h-4" />
+                                        Drop Your Idea
+                                    </>
+                                )}
+                            </button>
+
+                            {/* Status Messages */}
+                            {status === "error" && (
+                                <div className="text-center p-3 rounded-lg bg-destructive/10 border border-destructive/20">
+                                    <p className="text-destructive text-sm font-medium">Something went wrong. Please try again.</p>
+                                </div>
+                            )}
+                            {status === "success" && (
+                                <div className="text-center p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                                    <p className="text-green-600 dark:text-green-400 text-sm font-medium">Thank you! We'll review your idea soon. 🎉</p>
+                                </div>
+                            )}
+                        </form>
                     </div>
-                  )}
 
-                  <label className="block">
-                    <span className="text-sm text-gray-700 font-body font-medium">Name</span>
-                    <input
-                      type="text"
-                      name="name"
-                      required
-                      placeholder="Enter your name"
-                      className="mt-2 w-full rounded-lg border-2 border-gray-200 bg-white/80 backdrop-blur-sm px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 font-body transition shadow-sm"
-                    />
-                  </label>
-
-                  <label className="block">
-                    <span className="text-sm text-gray-700 font-body font-medium">Email</span>
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      placeholder="Enter your email"
-                      className="mt-2 w-full rounded-lg border-2 border-gray-200 bg-white/80 backdrop-blur-sm px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 font-body transition shadow-sm"
-                    />
-                  </label>
-
-                  <label className="block">
-                    <span className="text-sm text-gray-700 font-body font-medium">Message</span>
-                    <textarea
-                      name="message"
-                      required
-                      rows={4}
-                      placeholder="Tell us what you need..."
-                      className="mt-2 w-full rounded-lg border-2 border-gray-200 bg-white/80 backdrop-blur-sm px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 font-body transition resize-none shadow-sm"
-                    />
-                  </label>
-
-                  <button
-                    type="submit"
-                    disabled={formState === 'loading'}
-                    className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-linear-to-r from-primary to-secondary px-6 py-4 text-base font-semibold text-white shadow-xl shadow-blue-500/40 transition hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed font-body"
-                  >
-                    {formState === 'loading' ? (
-                      <>
-                        <FaSpinner className="animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      'Send Message'
-                    )}
-                  </button>
-                </form>
-              )}
+                    {/* Bottom decorative text */}
+                    <p className="text-center text-xs text-muted-foreground mt-6">
+                        Your ideas help us build better products. Thank you for contributing!
+                    </p>
+                </div>
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="relative overflow-hidden rounded-2xl border-2 border-cyan-200/50 bg-linear-to-br from-blue-50 via-cyan-50 to-teal-50 p-8 shadow-2xl backdrop-blur-xl"
-          >
-            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-blue-300/30 blur-3xl" />
-            <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-cyan-300/30 blur-3xl" />
-            <div className="absolute inset-0 bg-linear-to-br from-white/20 to-transparent" />
-            <div className="relative z-10">
-              <span className="inline-flex items-center gap-2 rounded-full border-2 border-white/40 bg-white/60 backdrop-blur-md px-4 py-1 text-xs uppercase tracking-[0.3em] text-blue-700 font-body shadow-lg font-semibold">
-                Support
-              </span>
-              <h3 className="mt-6 text-2xl font-semibold font-heading text-gray-900">We reply within 24 hours.</h3>
-              <p className="mt-4 text-sm text-gray-600 font-body">
-                Send us a note — a real human StyloFront engineer helps you wire the perfect UI pipeline.
-              </p>
-              <div className="mt-8 space-y-4 text-sm font-body">
-                <p className="flex items-center gap-3 text-gray-700">
-                  <span className="h-3 w-3 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/50" /> Live chat in-app
-                </p>
-                <p className="flex items-center gap-3 text-gray-700">
-                  <span className="h-3 w-3 rounded-full bg-cyan-500 shadow-lg shadow-cyan-500/50" /> Priority email support
-                </p>
-                <p className="flex items-center gap-3 text-gray-700">
-                  <span className="h-3 w-3 rounded-full bg-violet-500 shadow-lg shadow-violet-500/50" /> Dedicated onboarding
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
+        </section>
+    );
 }

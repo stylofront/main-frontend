@@ -1,19 +1,19 @@
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import ProblemSection from "./sections/problem";
-import SolutionSection from "./sections/solution";
-import ContactSection from "./sections/contact";
 import HeroSection from "./sections/hero";
+import PlatformSection from "./sections/platform";
+import ContactSection from "./sections/contact";
 
 export default function HomeContent() {
   return (
-    <main className="bg-white text-gray-900">
+    <main className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       <Header />
       <HeroSection />
-      <ProblemSection />
-      <SolutionSection />
+      <PlatformSection />
       <ContactSection />
       <Footer />
     </main>
   );
 }
+
+
