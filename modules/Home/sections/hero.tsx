@@ -161,42 +161,48 @@ export default function HeroSection() {
           <button
             onClick={toggleAudio}
             className={cn(
-              "relative px-3 py-2 sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 backdrop-blur-md border-2 border-primary/30 rounded-xl sm:rounded-2xl font-semibold text-xs sm:text-sm transition-all duration-300 flex items-center gap-2 sm:gap-3 group hover:scale-105 active:scale-95 shadow-2xl",
-              isPlaying && "glow-effect"
+              "relative px-3 py-2 sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 backdrop-blur-md border-2 rounded-xl sm:rounded-2xl font-semibold text-xs sm:text-sm transition-all duration-300 flex items-center gap-2 sm:gap-3 group hover:scale-105 active:scale-95 shadow-2xl",
+              isPlaying ? "border-primary/30 glow-effect" : "border-primary/20 opacity-60"
             )}
             aria-label={isPlaying ? "Pause music" : "Play music"}
           >
-            {/* Audio Visualizer Bars */}
-            <div className="flex items-end gap-0.5 h-5">
-              <div
-                className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300", isPlaying && "animating")}
-                style={{
-                  animationDelay: '0s',
-                  height: isPlaying ? undefined : '12px'
-                }}
-              />
-              <div
-                className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300", isPlaying && "animating")}
-                style={{
-                  animationDelay: '0.1s',
-                  height: isPlaying ? undefined : '18px'
-                }}
-              />
-              <div
-                className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300", isPlaying && "animating")}
-                style={{
-                  animationDelay: '0.2s',
-                  height: isPlaying ? undefined : '8px'
-                }}
-              />
-              <div
-                className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300", isPlaying && "animating")}
-                style={{
-                  animationDelay: '0.15s',
-                  height: isPlaying ? undefined : '14px'
-                }}
-              />
-            </div>
+            {/* Music Note (paused) or Visualizer Bars (playing) */}
+            {isPlaying ? (
+              <div className="flex items-end gap-0.5 h-5">
+                <div
+                  className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300 animating")}
+                  style={{
+                    animationDelay: '0s',
+                    height: '12px'
+                  }}
+                />
+                <div
+                  className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300 animating")}
+                  style={{
+                    animationDelay: '0.1s',
+                    height: '18px'
+                  }}
+                />
+                <div
+                  className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300 animating")}
+                  style={{
+                    animationDelay: '0.2s',
+                    height: '8px'
+                  }}
+                />
+                <div
+                  className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300 animating")}
+                  style={{
+                    animationDelay: '0.15s',
+                    height: '14px'
+                  }}
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-4 w-4">
+                <span className="text-primary text-lg sm:text-xl">♪</span>
+              </div>
+            )}
 
             {/* Play/Pause Icon */}
             <div className="relative">
@@ -224,7 +230,7 @@ export default function HeroSection() {
 
         <div className="relative z-10 container max-w-4xl mx-auto text-center">
           <div ref={textRef}>
-            <h1 className="hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight text-foreground mb-5 leading-[1.1] text-balance">
+            <h1 className="hero-title text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight text-foreground mb-5 leading-[1.1] text-balance">
               <span className="block">A Smarter Way to Build the</span>
 
               <span className="text-primary animate-gradient bg-gradient-to-r from-primary via-blue-600 to-primary bg-clip-text text-transparent block">
@@ -235,12 +241,14 @@ export default function HeroSection() {
               StyloFront is a modular front-end platform focused on simplifying workflows, reducing setup time, and accelerating modern web development.
             </p>
 
-            <div className="hero-btns flex flex-wrap gap-4 justify-center">
-              <button className="px-7 py-3.5 bg-primary text-primary-foreground rounded-xl font-bold text-base hover:opacity-90 hover:scale-105 transition-all shadow-xl shadow-primary/20 active:scale-95">
+            <div className="hero-btns flex justify-center">
+              <button
+                onClick={() => {
+                  document.getElementById('platform')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="px-8 py-4 bg-primary text-primary-foreground rounded-xl font-bold text-base hover:opacity-90 hover:scale-105 transition-all shadow-xl shadow-primary/20 active:scale-95"
+              >
                 Start Building
-              </button>
-              <button className="px-7 py-3.5 bg-secondary text-secondary-foreground rounded-xl font-bold text-base hover:bg-secondary/80 border border-border transition-all active:scale-95">
-                Learn More
               </button>
             </div>
           </div>
