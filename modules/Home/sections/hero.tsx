@@ -110,11 +110,11 @@ export default function HeroSection() {
         }
       `}</style>
 
-      <section ref={containerRef} id="hero" className="relative min-h-[98dvh] flex flex-col items-center justify-center overflow-hidden bg-background pt-24 pb-16 px-6">
+      <section ref={containerRef} id="hero" className="relative min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-background pt-24 pb-16 px-6">
         {/* Mobile: 12x12, Tablet: 18x18, Desktop: 24x24 */}
         <div className="block sm:hidden">
           <InteractiveGridPattern
-            squares={[12, 12]}
+            squares={[12, 18]}
             className={cn(
               "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]",
               "inset-x-0 inset-y-[-50%] h-[200%] skew-y-12",
