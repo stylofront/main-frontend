@@ -110,7 +110,7 @@ export default function HeroSection() {
         }
       `}</style>
 
-      <section ref={containerRef} id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background pt-24 pb-16 px-6">
+      <section ref={containerRef} id="hero" className="relative min-h-[98dvh] flex flex-col items-center justify-center overflow-hidden bg-background pt-24 pb-16 px-6">
         {/* Mobile: 12x12, Tablet: 18x18, Desktop: 24x24 */}
         <div className="block sm:hidden">
           <InteractiveGridPattern
