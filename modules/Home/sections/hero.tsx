@@ -114,7 +114,7 @@ export default function HeroSection() {
         {/* Mobile: 12x12, Tablet: 18x18, Desktop: 24x24 */}
         <div className="block sm:hidden">
           <InteractiveGridPattern
-            squares={[12, 18]}
+            squares={[12, 24]}
             className={cn(
               "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]",
               "inset-x-0 inset-y-[-50%] h-[200%] skew-y-12",
@@ -168,10 +168,34 @@ export default function HeroSection() {
           >
             {/* Audio Visualizer Bars */}
             <div className="flex items-end gap-0.5 h-5">
-              <div className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full", isPlaying && "animating")} style={{ animationDelay: '0s' }}></div>
-              <div className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full", isPlaying && "animating")} style={{ animationDelay: '0.1s' }}></div>
-              <div className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full", isPlaying && "animating")} style={{ animationDelay: '0.2s' }}></div>
-              <div className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full", isPlaying && "animating")} style={{ animationDelay: '0.15s' }}></div>
+              <div
+                className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300", isPlaying && "animating")}
+                style={{
+                  animationDelay: '0s',
+                  height: isPlaying ? undefined : '12px'
+                }}
+              />
+              <div
+                className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300", isPlaying && "animating")}
+                style={{
+                  animationDelay: '0.1s',
+                  height: isPlaying ? undefined : '18px'
+                }}
+              />
+              <div
+                className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300", isPlaying && "animating")}
+                style={{
+                  animationDelay: '0.2s',
+                  height: isPlaying ? undefined : '8px'
+                }}
+              />
+              <div
+                className={cn("visualizer-bar w-0.5 sm:w-1 bg-primary rounded-full transition-all duration-300", isPlaying && "animating")}
+                style={{
+                  animationDelay: '0.15s',
+                  height: isPlaying ? undefined : '14px'
+                }}
+              />
             </div>
 
             {/* Play/Pause Icon */}
