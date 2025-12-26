@@ -36,10 +36,10 @@ export function InteractiveGridPattern({
   // Create random pulsing effect for ambient animation (optimized)
   useEffect(() => {
     // Disable pulsing on mobile for better performance
-    if (isMobile) {
-      setPulsingSquares(new Set());
-      return;
-    }
+    // if (isMobile) {
+    //   setPulsingSquares(new Set());
+    //   return;
+    // }
 
     const activateRandomSquares = () => {
       const newPulsing = new Set<number>();
