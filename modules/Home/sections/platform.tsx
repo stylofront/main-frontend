@@ -22,6 +22,14 @@ const platforms = [
     gradient: "from-blue-600/20 to-cyan-500/10",
     accentColor: "text-blue-400",
     badge: "Tools"
+  },
+  {
+    title: "StyloFront Scaffold",
+    description: "Generate clean, modern project scaffolds in seconds. Client-side. Version-agnostic.",
+    url: "https://scaffold.stylofront.com",
+    gradient: "from-green-600/20 to-green-500/10",
+    accentColor: "text-green-400",
+    badge: "Scaffold"
   }
 ];
 
