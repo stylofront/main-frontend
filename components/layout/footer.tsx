@@ -4,7 +4,7 @@ const socials = [
   // { name: "LinkedIn", href: "https://www.linkedin.com", Icon: FaLinkedin },
   { name: "Instagram", href: "https://www.instagram.com/stylofront", Icon: FaInstagram },
   { name: "YouTube", href: "https://www.youtube.com/@stylofront", Icon: FaYoutube },
-  { name: "Facebook", href: "https://www.facebook.com/share/p/17gU4REAC1/", Icon: FaFacebook },
+  { name: "Facebook", href: "https://www.facebook.com/share/1AKJQ4wcBC/", Icon: FaFacebook },
   { name: "Reddit", href: "https://www.reddit.com/user/Less_Geologist_2675", Icon: FaReddit },
   { name: "X", href: "https://x.com/stylofront", Icon: FaXTwitter },
 ];

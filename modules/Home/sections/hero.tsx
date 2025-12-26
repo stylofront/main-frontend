@@ -199,7 +199,7 @@ export default function HeroSection() {
                 />
               </div>
             ) : (
-              <div className="flex items-center justify-center h-4 w-4">
+              <div className="flex items-center justify-center h-5 w-5 min-w-4">
                 <span className="text-primary text-xl sm:text-2xl">♪</span>
               </div>
             )}
