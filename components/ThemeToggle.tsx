@@ -10,7 +10,7 @@ export function ThemeToggle() {
     return (
         <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="relative p-2 rounded-xl bg-secondary/50 hover:bg-secondary/80 border border-border transition-all group overflow-hidden"
+            className="relative p-1 rounded-xl transition-all group overflow-hidden"
             aria-label="Toggle theme"
         >
             <div className="relative z-10">
