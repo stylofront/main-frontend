@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   creator: "StyloFront",
   publisher: "StyloFront",
   icons: {
-    icon: "/logo2.png",
-    apple: "/logo2.png",
+    icon: "/favicon.ico",
+    apple: "/favicon.ico",
   },
   openGraph: {
     type: "website",
@@ -77,7 +77,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/logo2.png" type="image/png" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="canonical" href={siteUrl} />
       </head>
       <body
